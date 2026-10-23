@@ -6,6 +6,26 @@ voice cloning, and measure native inference memory without a cloud TTS API.
 
 [English setup](#quick-start-windows) | [中文说明](#中文说明)
 
+## Screenshots
+
+### Model audition and playback
+
+Select a local model, edit the input text, choose a speaker, and play or export
+the generated audio.
+
+![Windows desktop app showing local model selection, Chinese audition text, and audio playback controls](./docs/screenshots/overview.png)
+
+### Multilingual audition and segment preview
+
+Generate the 20-language audition set, select a language-labelled result, and
+preview a segment by setting its start time and duration.
+
+![Multilingual audition showing Japanese text, language-labelled results, and a three-second segment preview](./docs/screenshots/multilingual-preview.png)
+
+These are screenshots of the native Windows application using built-in demo
+text and locally generated audio. Models and audio files are downloaded or
+generated during setup; they are not included in the repository.
+
 ## Features
 
 - Seven model families and eight downloadable ONNX packages.
