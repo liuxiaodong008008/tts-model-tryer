@@ -8,12 +8,19 @@ voice cloning, and measure native inference memory without a cloud TTS API.
 
 ## Screenshots
 
-### Model audition and playback
+### Chinese and English interfaces
 
 Select a local model, edit the input text, choose a speaker, and play or export
-the generated audio.
+the generated audio. Use the top-right **界面语言 / Interface language** selector
+to switch between **简体中文** and **English** without restarting.
 
-![Windows desktop app showing local model selection, Chinese audition text, and audio playback controls](./docs/screenshots/overview.png)
+**简体中文**
+
+![Chinese interface showing the interface language selector, local model selection, and audio playback controls](./docs/screenshots/overview.png)
+
+**English**
+
+![English interface with Chinese speech text, translated model descriptions, and playback controls](./docs/screenshots/overview-en.png)
 
 ### Multilingual audition and segment preview
 
@@ -30,6 +37,7 @@ generated during setup; they are not included in the repository.
 
 - Seven model families and eight downloadable ONNX packages.
 - Fully local CPU inference after downloading all models.
+- Live Chinese/English interface switching with a saved language preference.
 - Editable text, speaker selection, speaking speed, playback, and WAV export.
 - Preview or export a segment by setting its start time and duration.
 - One-click audition generation for 20 languages, with language-labelled history.
@@ -37,8 +45,8 @@ generated during setup; they are not included in the repository.
 - Reproducible Windows memory benchmarks: isolated processes, cold/warm inference,
   working-set peaks, and private committed memory.
 
-The current GUI labels are in Chinese. This is a **desktop evaluation tool**, not
-an Android/iOS app; desktop measurements do not establish mobile performance.
+This is a **desktop evaluation tool**, not an Android/iOS app; desktop
+measurements do not establish mobile performance.
 
 ## Supported model packages
 
@@ -105,16 +113,25 @@ validated, and wxPython may require platform-specific native dependencies.
 
 ## Using the app
 
+Choose **简体中文** or **English** in the top-right interface-language selector.
+The app starts in Chinese by default and remembers your choice for the next
+launch. Switching updates labels, model descriptions, language names, progress,
+history, and app-owned dialogs without changing your input, reference audio,
+parameters, current result, clip range, or playback. The interface language is
+independent of the speech language; your input and generated audio are not
+translated. Native system-dialog buttons and external-library diagnostics may
+follow the operating system or library language.
+
 1. Select a model, language, speaker ID, and preset text, or enter your own text.
-2. Click **合成并试听** to synthesize; **合成后自动播放** enables automatic playback.
-3. Select an item in the history list and click **播放完整音频** to play it.
-4. Set the start time and duration, then click **试听片段** to preview a segment.
-5. Use **另存完整 WAV** or **导出片段 WAV** to export the full audio or a clip.
-6. Click **一键生成 20 种语言试听** to generate the multilingual audition set.
+2. Click **Synthesize and play**; **Play automatically** enables automatic playback.
+3. Select an item in the history list and click **Play full audio** to play it.
+4. Set the start time and duration, then click **Preview clip** to preview a segment.
+5. Use **Save full WAV** or **Export clip WAV** to export the full audio or a clip.
+6. Click **Generate 20-language auditions** to generate the multilingual audition set.
 
 Generated WAV files and matching metadata are saved under `outputs/`.
 The latest 40 local results are restored when the app starts. A batch does not
-automatically play every clip. **停止批量** stops after the current clip finishes
+automatically play every clip. **Stop batch** stops after the current clip finishes
 and keeps completed results.
 
 For voice cloning, choose a WAV, FLAC, or OGG reference file. Use clean speech,
@@ -133,7 +150,8 @@ Microphone recording is not implemented.
 ```
 
 Unit tests cover input validation, archive handling, audio clipping, metadata,
-GUI interactions, batch cancellation, and Windows memory counters. Real synthesis
+GUI interactions, bilingual switching and preference persistence, batch
+cancellation, and Windows memory counters. Real synthesis
 checks validate non-empty, non-silent audio and save JSON reports in `outputs/`.
 They are not subjective listening-quality rankings.
 
@@ -160,6 +178,7 @@ do not replace long-running stress tests or mobile-device measurements.
 | File | Purpose |
 | --- | --- |
 | [app.py](./app.py) | wxPython audition interface |
+| [i18n.py](./i18n.py) | Chinese/English interface translations and diagnostics |
 | [tts_backend.py](./tts_backend.py) | Model catalog, downloads, inference, and audio helpers |
 | [prepare_models.py](./prepare_models.py) | Download all models or check local availability |
 | [verify_models.py](./verify_models.py) | Generate and validate real audition audio |
@@ -231,6 +250,14 @@ py -3.13 -m venv .venv
 
 ## 试听方法
 
+右上角“界面语言 / Interface language”可在 **简体中文** 和 **English** 之间即时切换，
+无需重启；首次启动默认中文，选择会保存，下次启动自动恢复。
+切换会更新按钮、模型说明、语言名称、进度、历史列表和应用提示，
+不会清空输入、参考录音、参数或试听结果，也不会改变片段范围或打断播放。
+界面语言与语音语言独立，切换界面不会翻译输入文本或生成的语音。
+系统原生对话框按钮及外部库错误信息可能仍使用系统或外部库自身的语言。
+上方截图展示了中英文界面和日语片段试听。
+
 1. 选择模型、语言、音色和预设文本，也可输入自己的内容。
 2. 点击“合成并试听”，界面后台加载模型并合成，结果自动保存。
 3. 选择历史结果，可重播完整音频；设置起点和时长，点击“试听片段”。
@@ -251,7 +278,7 @@ py -3.13 -m venv .venv
 
 中文使用 Kokoro 音色 45，其余 19 种使用 Supertonic 3 音色 6、8 步合成。
 这不是所有模型都支持全部 20 种语言；界面的语言选项仍按模型实际支持范围显示。
-列表显示中文语言名称及代码，可直接选中语言试听或导出片段。
+列表按界面语言显示语言名称及代码，可直接选中语言试听或导出片段。
 批量任务不自动连播；点击“停止批量”会在当前片段完成后停止，已生成的结果保留。
 全部使用已下载模型，不访问网络，也不会增加模型下载量。
 
