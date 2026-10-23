@@ -1,0 +1,5 @@
+wxPython==4.3.2
+sherpa-onnx==1.13.8
+numpy==2.5.4
+soundfile==0.14.0
+sounddevice==0.5.6
